@@ -1,0 +1,30 @@
+[Unit]
+Description=Auto Screen Rotation Service
+Documentation=https://github.com/dennorske/x13-flow-screenrotate-wayland
+After=graphical-session.target
+Wants=graphical-session.target
+
+[Service]
+Type=simple
+Environment="XDG_SESSION_TYPE=wayland"
+ExecStartPre=/bin/sleep 5
+ExecStart=SCRIPT_DIR_PLACEHOLDER/autoscreenrotation.sh
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=autoscreenrotation
+KillMode=mixed
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+# Security settings
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.config SCRIPT_DIR_PLACEHOLDER
+PrivateDevices=no
+
+[Install]
+WantedBy=default.target
